@@ -1,9 +1,8 @@
 backend:
-  name: git-gateway
-  branch: main
-
+  name: github
+  repo: PauloFloors/PauloFloors
+  branch: main    
 publish_mode: simple
-
 collections:
   - name: "gallery_installation"
     label: "Fotos — Hardwood Floor Installation"
