@@ -16,6 +16,7 @@ GALLERIES = {
             "Wide-plank hardwood installed through an open-concept living and dining area.",
             "Rich, dark hardwood installed in a formal living space.",
             "Exotic hardwood installed in an open living space with a custom wet bar.",
+            "Installation Deck",
         ],
     },
     "hardwood-floor-repair": {
