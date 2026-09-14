@@ -156,6 +156,7 @@
   .nav-contact-item:hover{color:var(--ink);background:rgba(244,239,230,0.07);}
   .nav-cta{display:flex;align-items:center;gap:10px;margin-left:8px;}
   .nav-cta .btn{height:38px;padding:4px 4px 4px 16px;font-size:12.5px;min-width:0;}
+  .nav-cta .btn-glass{font-weight:500;}
   .nav-cta .btn svg{width:24px;height:24px;flex:0 0 24px;padding:6px;}
   .menu-btn{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;padding:0;}
   .menu-btn span{height:1.6px;background:var(--ink);width:20px;transition:.3s var(--ease);}
