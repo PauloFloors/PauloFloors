@@ -684,6 +684,24 @@
 }
 .svc-gallery-item:hover img{transform:scale(1.03);}
 .svc-gallery-note{font-size:13px;color:var(--ink-faint);margin-top:20px;}
+.svc-gallery-play-badge{
+  position:absolute;top:0;left:0;right:0;
+  aspect-ratio:4/5;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.svc-gallery-play-badge svg{
+  width:52px;height:52px;padding:15px;margin-left:3px;
+  border-radius:50%;color:var(--cream);
+  background:rgba(20,16,12,0.55);
+  border:1px solid rgba(244,239,230,0.35);
+  box-sizing:border-box;
+  transition:background .25s, transform .3s var(--ease);
+}
+.svc-gallery-item:hover .svc-gallery-play-badge svg{
+  background:rgba(20,16,12,0.75);
+  transform:scale(1.08);
+}
 
 /* Simple service page intro (no big hero) */
 .svc-intro{padding:150px 0 60px;background:var(--bg-deep);}
@@ -709,6 +727,12 @@
 .lightbox-img-wrap img{
   max-width:100%;max-height:72vh;border-radius:6px;
   box-shadow:0 30px 80px -20px rgba(0,0,0,0.7);
+}
+.lightbox-img-wrap video{
+  display:none;
+  max-width:100%;max-height:72vh;border-radius:6px;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.7);
+  background:#000;
 }
 .lightbox-close{
   position:absolute;top:24px;right:24px;

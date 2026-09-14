@@ -3,6 +3,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from service_data import SERVICES
 from gallery_data import GALLERIES
+from shared_gallery_data import SHARED_GALLERY_PHOTOS, SHARED_GALLERY_VIDEOS
 from service_content import PROCESS_STEPS, WHY_MATTERS, FAQS
 from city_data import CITIES, slugify, COUNTIES_ORDER
 
@@ -233,6 +234,7 @@ GALLERY_SECTION = '''
     </button>
     <div class="lightbox-img-wrap">
       <img id="lightboxImg" src="" alt="">
+      <video id="lightboxVideo" controls playsinline></video>
       <p class="lightbox-caption" id="lightboxCaption"></p>
     </div>
     <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">
@@ -487,28 +489,51 @@ FOOTER_AND_SCRIPTS = '''
     const items = Array.from(gallery.querySelectorAll('.svc-gallery-item'));
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxVideo = document.getElementById('lightboxVideo');
     const lightboxCaption = document.getElementById('lightboxCaption');
     const counter = document.getElementById('lightboxCounter');
     let current = 0;
+    function stopVideo(){
+      lightboxVideo.pause();
+      lightboxVideo.removeAttribute('src');
+      lightboxVideo.load();
+      lightboxVideo.style.display = 'none';
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      stopVideo();
+    }
     function show(i){
       current = (i + items.length) % items.length;
-      const img = items[current].querySelector('img');
-      const cap = items[current].querySelector('.svc-gallery-caption');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      const el = items[current];
+      const img = el.querySelector('img');
+      const cap = el.querySelector('.svc-gallery-caption');
+      const videoSrc = el.getAttribute('data-video');
+      if(videoSrc){
+        lightboxImg.style.display = 'none';
+        lightboxVideo.style.display = 'block';
+        lightboxVideo.src = videoSrc;
+        lightboxVideo.load();
+        lightboxVideo.play().catch(() => {});
+      } else {
+        stopVideo();
+        lightboxImg.style.display = '';
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+      }
       lightboxCaption.textContent = cap ? cap.textContent : '';
       counter.textContent = (current+1) + ' / ' + items.length;
     }
     items.forEach((item, i) => {
       item.addEventListener('click', () => { show(i); lightbox.classList.add('open'); });
     });
-    document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
     document.getElementById('lightboxPrev').addEventListener('click', () => show(current-1));
     document.getElementById('lightboxNext').addEventListener('click', () => show(current+1));
-    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.classList.remove('open'); });
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', (e) => {
       if(!lightbox.classList.contains('open')) return;
-      if(e.key === 'Escape') lightbox.classList.remove('open');
+      if(e.key === 'Escape') closeLightbox();
       if(e.key === 'ArrowLeft') show(current-1);
       if(e.key === 'ArrowRight') show(current+1);
     });
@@ -531,6 +556,35 @@ def build_gallery_html(slug):
             f'<p class="svc-gallery-caption">{caption}</p>'
             f'</div>'
         )
+
+    # Shared project photos — the same set appears in every service gallery,
+    # appended after the service-specific photos above (which supply each
+    # gallery's cover image).
+    for i, caption in enumerate(SHARED_GALLERY_PHOTOS, start=1):
+        items.append(
+            f'        <div class="svc-gallery-item pic">'
+            f'<img src="/images/gallery/shared/gallery-shared-photo-{i:02d}.jpg" '
+            f'alt="{caption}" loading="lazy">'
+            f'<p class="svc-gallery-caption">{caption}</p>'
+            f'</div>'
+        )
+
+    # Shared project videos — same set in every gallery, poster-framed and
+    # played back through the lightbox.
+    for i, caption in enumerate(SHARED_GALLERY_VIDEOS, start=1):
+        items.append(
+            f'        <div class="svc-gallery-item vid" '
+            f'data-video="/videos/gallery/shared/gallery-shared-video-{i:02d}.mp4">'
+            f'<img src="/images/gallery/shared/gallery-shared-video-{i:02d}.jpg" '
+            f'alt="{caption}" loading="lazy">'
+            f'<span class="svc-gallery-play-badge" aria-hidden="true">'
+            f'<svg width="18" height="18" viewBox="0 0 24 24" fill="none">'
+            f'<path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>'
+            f'</span>'
+            f'<p class="svc-gallery-caption">{caption}</p>'
+            f'</div>'
+        )
+
     note = ""
     if len(gdata['photos']) < 3:
         note = '      <p class="svc-gallery-note">More project photos of this service are being added soon.</p>'
