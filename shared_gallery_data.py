@@ -37,4 +37,8 @@ SHARED_GALLERY_VIDEOS = [
     "Moving along a stair railing toward a hardwood landing mid-refinish.",
     "A floor sander set up on an exterior deck, ready for refinishing.",
     "A newly refinished hardwood floor near a baseboard heater.",
+    "Setting a herringbone hardwood plank into fresh adhesive during installation.",
+    "Fitting a hardwood plank against an existing tile floor at a doorway transition.",
+    "Trimming a herringbone hardwood point into place with a rubber mallet.",
+    "Prepping adhesive and staging planks for a herringbone floor installation.",
 ]

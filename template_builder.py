@@ -88,7 +88,6 @@ HEAD = '''<!DOCTYPE html>
       </ul>
     </nav>
     <div class="nav-cta">
-      <button type="button" class="btn btn-glass" data-open-contact>Contact</button>
       <button type="button" class="btn btn-primary" data-open-contact>
         Get a Quote
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
